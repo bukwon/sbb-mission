@@ -1,5 +1,8 @@
 package com.sbbproject.sbbproject;
 
+import com.sbbproject.sbbproject.answer.Answer;
+import com.sbbproject.sbbproject.question.Question;
+import com.sbbproject.sbbproject.question.QuestionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
