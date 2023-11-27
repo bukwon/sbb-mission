@@ -1,6 +1,8 @@
 package com.sbbproject.sbbproject.question;
 
+import com.sbbproject.sbbproject.answer.Answer;
 import com.sbbproject.sbbproject.answer.AnswerForm;
+import com.sbbproject.sbbproject.answer.AnswerService;
 import com.sbbproject.sbbproject.user.SiteUser;
 import com.sbbproject.sbbproject.user.UserService;
 import jakarta.validation.Valid;
@@ -23,6 +25,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final UserService userService;
+    private final AnswerService answerService;
 
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
@@ -32,12 +35,12 @@ public class QuestionController {
         return "question_list";
     }
 
-    @GetMapping(value = "/detail/{id}")
+    /*@GetMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
         Question question = this.questionService.getQuestion(id);
         model.addAttribute("question", question);
         return "question_detail";
-    }
+    }*/
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
@@ -103,5 +106,15 @@ public class QuestionController {
         SiteUser siteUser = this.userService.getUser(principal.getName());
         this.questionService.vote(question, siteUser);
         return String.format("redirect:/question/detail/%s", id);
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm,
+                         @RequestParam(value="page", defaultValue = "0") int page) {
+        Question question = this.questionService.getQuestion(id);
+        Page<Answer> answerPaging = this.answerService.getList(question, page);
+        model.addAttribute("question", question);
+        model.addAttribute("answerPaging", answerPaging);
+        return "question_detail";
     }
 }
