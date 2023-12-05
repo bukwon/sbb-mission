@@ -1,0 +1,35 @@
+# DATABASE
+#spring.h2.console.path=/h2-sbb SecurityConfig ?????? ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))) ? ??? ???? ???
+# ???? ??. 3?? ?? ??? ???. ?? ??? url? ??
+
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/sbb
+    username: sa
+    password:
+
+  #JPA
+  jpa:
+    properties:
+      jakarta:
+        persistence:
+          sharedCache:
+            mode : ALL
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        hbm2ddl:
+          auto: update
+
+        format_sql: true
+        show_sql: true
+logging:
+  level:
+    org:
+      springframework:
+        core:
+          org.springframework.core.LocalVariableTableParameterNameDiscoverer : error
+#spring.threads.virtual.enabled=true
